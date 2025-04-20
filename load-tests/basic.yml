@@ -1,0 +1,30 @@
+config:
+  target: http://127.0.0.1:4000
+  phases:
+    - duration: 2
+      arrivalRate: 1
+      rampTo: 2
+      name: Warm up phase
+    - duration: 2
+      arrivalRate: 2
+      rampTo: 4
+      name: Ramp up load
+    - duration: 2
+      arrivalRate: 4
+      rampTo: 8
+      name: Spike phase
+
+  plugins:
+    ensure: {}
+    apdex: {}
+    metrics-by-endpoint: {}
+  apdex:
+    threshold: 100
+  engines:
+    playwright: {}
+  processor: '../e2e/playwright-runner.cjs'
+
+scenarios:
+  - name: Playwright Scenario
+    flow:
+      - function: "runPlaywrightTest"
